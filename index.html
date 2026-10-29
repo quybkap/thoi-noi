@@ -47,15 +47,15 @@
   .story{margin:30px 0}
   .story h2{font-family:'Baloo 2';text-align:center;color:var(--pink);font-size:1.6rem;margin:0 0 4px}
   .story .lead{text-align:center;font-weight:600;margin:0 0 16px}
-  .grid{display:grid;grid-template-columns:repeat(2,1fr);gap:10px}
+  .grid{display:grid;grid-template-columns:repeat(2,1fr);gap:10px;align-items:start}
   .moment{background:var(--card);border:2px dashed var(--line);border-radius:18px;padding:8px;
     opacity:0;transform:translateY(18px);transition:opacity .5s,transform .5s}
   .moment.show{opacity:1;transform:none}
   .moment img{display:block;width:100%;aspect-ratio:1/1;object-fit:cover;border-radius:12px;background:#f3e6cf}
-  .moment .when{display:inline-block;margin:8px 0 2px;padding:2px 12px;border-radius:999px;color:#fff;
+  .moment .when{display:inline-block;margin:8px 0 4px;padding:2px 12px;border-radius:999px;color:#fff;
     font-family:'Baloo 2';font-weight:700;font-size:.95rem;background:var(--pink)}
   .moment:nth-child(4n+2) .when,.moment:nth-child(4n+3) .when{background:var(--blue)}
-  .moment p{margin:2px 4px 4px;font-weight:600;font-size:.85rem;line-height:1.35}
+  .moment .desc2{margin:2px 4px 6px;font-weight:600;font-size:.88rem;line-height:1.45}
 
   .ribbon{background:#8db6e8;color:#fff;font-family:'Baloo 2';font-weight:700;font-size:1.3rem;
     text-align:center;padding:10px;margin:28px -6px 16px;border-radius:6px;
@@ -178,20 +178,20 @@
 
   // ===== Hành trình 12 tháng =====
   // Ảnh đặt tên: thang-01.jpg ... thang-12.jpg (cùng thư mục với index.html)
-  // Sửa chú thích ở đây. Để '' nếu không muốn có chú thích.
+  // SỬA MÔ TẢ Ở ĐÂY: thay nội dung trong note: '...' của từng tháng.
   const months = [
-    { label: 'Tháng 1',  note: '' },
-    { label: 'Tháng 2',  note: '' },
-    { label: 'Tháng 3',  note: '' },
-    { label: 'Tháng 4',  note: '' },
-    { label: 'Tháng 5',  note: '' },
-    { label: 'Tháng 6',  note: '' },
-    { label: 'Tháng 7',  note: '' },
-    { label: 'Tháng 8',  note: '' },
-    { label: 'Tháng 9',  note: '' },
-    { label: 'Tháng 10', note: '' },
-    { label: 'Tháng 11', note: '' },
-    { label: 'Tròn 1 tuổi 🎂', note: '' }
+    { label: 'Tháng 1',  note: 'Mô tả tháng 1: các con chào đời, những ngày đầu bên ba mẹ.' },
+    { label: 'Tháng 2',  note: 'Mô tả tháng 2.' },
+    { label: 'Tháng 3',  note: 'Mô tả tháng 3.' },
+    { label: 'Tháng 4',  note: 'Mô tả tháng 4.' },
+    { label: 'Tháng 5',  note: 'Mô tả tháng 5.' },
+    { label: 'Tháng 6',  note: 'Mô tả tháng 6.' },
+    { label: 'Tháng 7',  note: 'Mô tả tháng 7.' },
+    { label: 'Tháng 8',  note: 'Mô tả tháng 8.' },
+    { label: 'Tháng 9',  note: 'Mô tả tháng 9.' },
+    { label: 'Tháng 10', note: 'Mô tả tháng 10.' },
+    { label: 'Tháng 11', note: 'Mô tả tháng 11.' },
+    { label: 'Tròn 1 tuổi 🎂', note: 'Hôm nay các con tròn một tuổi. Cảm ơn mọi người đã đồng hành cùng gia đình!' }
   ];
 
   const grid = $('grid');
@@ -208,7 +208,7 @@
     img.src = 'thang-' + n + '.jpg';
     img.alt = m.label;
     img.loading = 'lazy';
-    img.onerror = () => card.remove();   // chưa có ảnh thì ẩn thẻ, không hiện ảnh lỗi
+    img.onerror = () => card.remove();   // chưa có ảnh thì ẩn cả thẻ
 
     const tag = document.createElement('span');
     tag.className = 'when';
@@ -217,6 +217,7 @@
     card.append(img, tag);
     if (m.note){
       const p = document.createElement('p');
+      p.className = 'desc2';
       p.textContent = m.note;
       card.append(p);
     }
