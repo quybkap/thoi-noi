@@ -43,18 +43,19 @@
   .count b{display:block;font-family:'Baloo 2';font-size:1.7rem;color:var(--pink)}
   .count span{font-size:.75rem;font-weight:700}
 
-  /* Hành trình của các con */
+  /* Hành trình của các con: lưới 2 cột */
   .story{margin:30px 0}
   .story h2{font-family:'Baloo 2';text-align:center;color:var(--pink);font-size:1.6rem;margin:0 0 4px}
-  .story .lead{text-align:center;font-weight:600;margin:0 0 18px}
-  .moment{background:var(--card);border:2px dashed var(--line);border-radius:24px;padding:12px;margin:0 0 18px;
-    opacity:0;transform:translateY(24px);transition:opacity .6s,transform .6s}
+  .story .lead{text-align:center;font-weight:600;margin:0 0 16px}
+  .grid{display:grid;grid-template-columns:repeat(2,1fr);gap:10px}
+  .moment{background:var(--card);border:2px dashed var(--line);border-radius:18px;padding:8px;
+    opacity:0;transform:translateY(18px);transition:opacity .5s,transform .5s}
   .moment.show{opacity:1;transform:none}
-  .moment img{display:block;width:100%;aspect-ratio:4/3;object-fit:cover;border-radius:16px;background:#f3e6cf}
-  .moment .when{display:inline-block;margin:12px 0 4px;padding:3px 14px;border-radius:999px;color:#fff;
-    font-family:'Baloo 2';font-weight:700;background:var(--pink)}
-  .moment:nth-child(even) .when{background:var(--blue)}
-  .moment p{margin:4px 4px 6px;font-weight:600;line-height:1.5}
+  .moment img{display:block;width:100%;aspect-ratio:1/1;object-fit:cover;border-radius:12px;background:#f3e6cf}
+  .moment .when{display:inline-block;margin:8px 0 2px;padding:2px 12px;border-radius:999px;color:#fff;
+    font-family:'Baloo 2';font-weight:700;font-size:.95rem;background:var(--pink)}
+  .moment:nth-child(4n+2) .when,.moment:nth-child(4n+3) .when{background:var(--blue)}
+  .moment p{margin:2px 4px 4px;font-weight:600;font-size:.85rem;line-height:1.35}
 
   .ribbon{background:#8db6e8;color:#fff;font-family:'Baloo 2';font-weight:700;font-size:1.3rem;
     text-align:center;padding:10px;margin:28px -6px 16px;border-radius:6px;
@@ -121,43 +122,8 @@
 
   <section class="story">
     <h2>🍼 Hành trình của các con</h2>
-    <p class="lead">Từ ngày đầu chào đời đến tròn một tuổi</p>
-
-    <article class="moment">
-      <img src="01-chao-doi.jpg" alt="Ngày chào đời" loading="lazy">
-      <span class="when">Ngày chào đời</span>
-      <p>Hai thiên thần nhỏ đến với ba mẹ. Viết vài dòng về ngày này ở đây.</p>
-    </article>
-
-    <article class="moment">
-      <img src="02-1-thang.jpg" alt="1 tháng tuổi" loading="lazy">
-      <span class="when">1 tháng</span>
-      <p>Chú thích cho mốc 1 tháng.</p>
-    </article>
-
-    <article class="moment">
-      <img src="03-3-thang.jpg" alt="3 tháng tuổi" loading="lazy">
-      <span class="when">3 tháng</span>
-      <p>Chú thích cho mốc 3 tháng.</p>
-    </article>
-
-    <article class="moment">
-      <img src="04-6-thang.jpg" alt="6 tháng tuổi" loading="lazy">
-      <span class="when">6 tháng</span>
-      <p>Chú thích cho mốc 6 tháng.</p>
-    </article>
-
-    <article class="moment">
-      <img src="05-9-thang.jpg" alt="9 tháng tuổi" loading="lazy">
-      <span class="when">9 tháng</span>
-      <p>Chú thích cho mốc 9 tháng.</p>
-    </article>
-
-    <article class="moment">
-      <img src="06-thoi-noi.jpg" alt="Tròn 1 tuổi" loading="lazy">
-      <span class="when">Tròn 1 tuổi 🎂</span>
-      <p>Và hôm nay, các con tròn một tuổi. Cảm ơn mọi người đã đồng hành cùng gia đình!</p>
-    </article>
+    <p class="lead">Mỗi tháng một kỷ niệm, từ lúc chào đời đến tròn một tuổi</p>
+    <div class="grid" id="grid"></div>
   </section>
 
   <div class="ribbon">♥ Timeline chương trình ♥</div>
@@ -198,7 +164,7 @@
 </div>
 
 <script>
-  // 17h30 ngày 07/11/2026, giờ Việt Nam (UTC+7)
+  // ===== Đếm ngược: 17h30 ngày 07/11/2026, giờ Việt Nam (UTC+7) =====
   const target = new Date('2026-11-07T17:30:00+07:00').getTime();
   const $ = id => document.getElementById(id);
   function tick(){
@@ -210,11 +176,53 @@
   }
   tick(); setInterval(tick, 1000);
 
-  // Hiện dần từng mốc khi cuộn tới
+  // ===== Hành trình 12 tháng =====
+  // Ảnh đặt tên: thang-01.jpg ... thang-12.jpg (cùng thư mục với index.html)
+  // Sửa chú thích ở đây. Để '' nếu không muốn có chú thích.
+  const months = [
+    { label: 'Tháng 1',  note: '' },
+    { label: 'Tháng 2',  note: '' },
+    { label: 'Tháng 3',  note: '' },
+    { label: 'Tháng 4',  note: '' },
+    { label: 'Tháng 5',  note: '' },
+    { label: 'Tháng 6',  note: '' },
+    { label: 'Tháng 7',  note: '' },
+    { label: 'Tháng 8',  note: '' },
+    { label: 'Tháng 9',  note: '' },
+    { label: 'Tháng 10', note: '' },
+    { label: 'Tháng 11', note: '' },
+    { label: 'Tròn 1 tuổi 🎂', note: '' }
+  ];
+
+  const grid = $('grid');
   const io = new IntersectionObserver(es => es.forEach(e => {
     if (e.isIntersecting){ e.target.classList.add('show'); io.unobserve(e.target); }
-  }), {threshold:.15});
-  document.querySelectorAll('.moment').forEach(el => io.observe(el));
+  }), {threshold:.1});
+
+  months.forEach((m, i) => {
+    const n = String(i + 1).padStart(2, '0');
+    const card = document.createElement('article');
+    card.className = 'moment';
+
+    const img = document.createElement('img');
+    img.src = 'thang-' + n + '.jpg';
+    img.alt = m.label;
+    img.loading = 'lazy';
+    img.onerror = () => card.remove();   // chưa có ảnh thì ẩn thẻ, không hiện ảnh lỗi
+
+    const tag = document.createElement('span');
+    tag.className = 'when';
+    tag.textContent = m.label;
+
+    card.append(img, tag);
+    if (m.note){
+      const p = document.createElement('p');
+      p.textContent = m.note;
+      card.append(p);
+    }
+    grid.append(card);
+    io.observe(card);
+  });
 </script>
 </body>
 </html>
