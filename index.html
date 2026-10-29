@@ -65,6 +65,10 @@
     padding:16px 20px;text-align:center}
   .note h3{margin:0 0 6px;font-family:'Baloo 2';color:var(--pink);font-size:1.4rem}
   .note p{margin:0;font-weight:600}
+  .rsvp{margin-top:26px;background:var(--card);border:2px dashed var(--line);border-radius:24px;padding:16px;text-align:center}
+  .rsvp h3{margin:0 0 6px;font-family:'Baloo 2';color:var(--blue);font-size:1.4rem}
+  .rsvp p{margin:0 0 12px;font-weight:600}
+  .rsvp iframe{width:100%;height:480px;border:0;border-radius:16px;background:#fff}
   .btns{display:flex;flex-wrap:wrap;gap:10px;justify-content:center;margin:24px 0 8px}
   .btn{text-decoration:none;font-family:'Baloo 2';font-weight:700;padding:11px 22px;border-radius:999px;
     color:#fff;background:var(--pink);box-shadow:0 4px 10px rgba(238,111,139,.4);transition:transform .15s}
@@ -118,10 +122,17 @@
 
   <section class="note">
     <h3>📣 Lưu ý nhỏ</h3>
-    <p>Tiệc đã chuẩn bị bánh kem nên mọi người không mua tặng thêm để tránh lãng phí ạ ♥</p>
+    <p>Tiệc đã chuẩn bị bánh kem nên ba mẹ không mua tặng thêm để tránh lãng phí ạ ♥</p>
+  </section>
+
+  <section class="rsvp" id="rsvp">
+    <h3>💌 Xác nhận tham dự</h3>
+    <p>Ba mẹ vui lòng cho biết số người tham dự nhé!</p>
+    <iframe src="https://docs.google.com/forms/d/1QnQgWwtqu2-802IJKOSQ-bel7viiOUpvGfvQA9-pV8U/viewform?embedded=true" loading="lazy">Đang tải…</iframe>
   </section>
 
   <div class="btns">
+    <a class="btn" href="#rsvp">💌 Xác nhận tham dự</a>
     <a class="btn" target="_blank" rel="noopener"
        href="https://www.google.com/maps/search/?api=1&query=Huong+The+Garden+51A+Trung+Hoa+Ha+Noi">📍 Xem bản đồ</a>
     <a class="btn b" target="_blank" rel="noopener"
