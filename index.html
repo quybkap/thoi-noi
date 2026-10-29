@@ -46,12 +46,14 @@
   /* Hành trình của các con: lưới 2 cột */
   .story{margin:30px 0}
   .story h2{font-family:'Baloo 2';text-align:center;color:var(--pink);font-size:1.6rem;margin:0 0 4px}
+  .story h3.vtitle{font-family:'Baloo 2';text-align:center;color:var(--blue);font-size:1.4rem;margin:26px 0 12px}
   .story .lead{text-align:center;font-weight:600;margin:0 0 16px}
   .grid{display:grid;grid-template-columns:repeat(2,1fr);gap:10px;align-items:start}
   .moment{background:var(--card);border:2px dashed var(--line);border-radius:18px;padding:8px;
     opacity:0;transform:translateY(18px);transition:opacity .5s,transform .5s}
   .moment.show{opacity:1;transform:none}
   .moment img{display:block;width:100%;aspect-ratio:1/1;object-fit:cover;border-radius:12px;background:#f3e6cf}
+  .moment video{display:block;width:100%;max-height:420px;border-radius:12px;background:#000}
   .moment .when{display:inline-block;margin:8px 0 4px;padding:2px 12px;border-radius:999px;color:#fff;
     font-family:'Baloo 2';font-weight:700;font-size:.95rem;background:var(--pink)}
   .moment:nth-child(4n+2) .when,.moment:nth-child(4n+3) .when{background:var(--blue)}
@@ -124,6 +126,9 @@
     <h2>🍼 Hành trình của các con</h2>
     <p class="lead">Mỗi tháng một kỷ niệm, từ lúc chào đời đến tròn một tuổi</p>
     <div class="grid" id="grid"></div>
+
+    <h3 class="vtitle" id="vtitle">🎬 Video kỷ niệm</h3>
+    <div class="grid" id="vgrid"></div>
   </section>
 
   <div class="ribbon">♥ Timeline chương trình ♥</div>
@@ -177,7 +182,7 @@
   tick(); setInterval(tick, 1000);
 
   // ===== Hành trình 12 tháng =====
-  // Ảnh đặt tên: thang-01.jpg ... thang-12.jpg (cùng thư mục với index.html)
+  // Ảnh đặt tên: thang-01 ... thang-12, đuôi nào cũng được (jpg, jpeg, png, webp).
   // SỬA MÔ TẢ Ở ĐÂY: thay nội dung trong note: '...' của từng tháng.
   const months = [
     { label: 'Tháng 1',  note: 'Mô tả tháng 1: các con chào đời, những ngày đầu bên ba mẹ.' },
@@ -194,34 +199,76 @@
     { label: 'Tròn 1 tuổi 🎂', note: 'Hôm nay các con tròn một tuổi. Cảm ơn mọi người đã đồng hành cùng gia đình!' }
   ];
 
-  const grid = $('grid');
+  // ===== 2 video mp4 =====
+  // Đặt tên file: video-01.mp4, video-02.mp4 (cùng thư mục với index.html)
+  const videos = [
+    { file: 'video-01.mp4', label: 'Video 1', note: 'Mô tả video 1.' },
+    { file: 'video-02.mp4', label: 'Video 2', note: 'Mô tả video 2.' }
+  ];
+
+  const EXTS = ['jpg', 'jpeg', 'png', 'webp', 'JPG', 'JPEG', 'PNG', 'WEBP'];
+  const grid = $('grid'), vgrid = $('vgrid');
   const io = new IntersectionObserver(es => es.forEach(e => {
     if (e.isIntersecting){ e.target.classList.add('show'); io.unobserve(e.target); }
   }), {threshold:.1});
 
+  function addText(card, text){
+    if (!text) return;
+    const p = document.createElement('p');
+    p.className = 'desc2';
+    p.textContent = text;
+    card.append(p);
+  }
+
+  // Ảnh: thử lần lượt từng đuôi file, hết đuôi mà không có thì ẩn thẻ
   months.forEach((m, i) => {
-    const n = String(i + 1).padStart(2, '0');
+    const base = 'thang-' + String(i + 1).padStart(2, '0');
     const card = document.createElement('article');
     card.className = 'moment';
 
     const img = document.createElement('img');
-    img.src = 'thang-' + n + '.jpg';
     img.alt = m.label;
     img.loading = 'lazy';
-    img.onerror = () => card.remove();   // chưa có ảnh thì ẩn cả thẻ
+    let k = 0;
+    img.onerror = () => {
+      k++;
+      if (k < EXTS.length) img.src = base + '.' + EXTS[k];
+      else card.remove();
+    };
+    img.src = base + '.' + EXTS[0];
 
     const tag = document.createElement('span');
     tag.className = 'when';
     tag.textContent = m.label;
 
     card.append(img, tag);
-    if (m.note){
-      const p = document.createElement('p');
-      p.className = 'desc2';
-      p.textContent = m.note;
-      card.append(p);
-    }
+    addText(card, m.note);
     grid.append(card);
+    io.observe(card);
+  });
+
+  // Video: chưa có file thì ẩn thẻ; hết video thì ẩn luôn tiêu đề
+  videos.forEach(v => {
+    const card = document.createElement('article');
+    card.className = 'moment';
+
+    const vid = document.createElement('video');
+    vid.controls = true;
+    vid.playsInline = true;
+    vid.preload = 'metadata';
+    vid.src = v.file + '#t=0.1';   // hiện sẵn khung hình đầu
+    vid.onerror = () => {
+      card.remove();
+      if (!vgrid.children.length) $('vtitle').remove();
+    };
+
+    const tag = document.createElement('span');
+    tag.className = 'when';
+    tag.textContent = v.label;
+
+    card.append(vid, tag);
+    addText(card, v.note);
+    vgrid.append(card);
     io.observe(card);
   });
 </script>
